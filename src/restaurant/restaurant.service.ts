@@ -21,7 +21,7 @@ export class RestaurantService {
   }
 
   async single(id: number): Promise<any> {
-    const restaurant = await this.restaurantRepository.findOne({ id }, {relations: ["foods"]});
+    const restaurant = await this.restaurantRepository.findOne({ id }, {relations: ["foods", "customers"]});
     if (!restaurant)
       return new NotFoundException("restaurant not found").getResponse();
     return restaurant;
@@ -60,6 +60,32 @@ export class RestaurantService {
         .relation(Restaurant, "foods")
         .of(restaurantId)
         .remove(foodId);
+      return { result: true };
+    } catch (err) {
+      console.log(err);
+      throw new NotFoundException("Could not found restaurant");
+    }
+  }
+
+  async addCustomerToRestaurant(restaurantId: number, customerId: number): Promise<any> {
+    try {
+      await this.restaurantRepository.createQueryBuilder()
+        .relation(Restaurant, "customers")
+        .of(restaurantId)
+        .add(customerId);
+      return { result: true };
+    } catch (err) {
+      console.log(err);
+      throw new NotFoundException("Could not found restaurant");
+    }
+  }
+
+  async removeCustomerToRestaurant(restaurantId: number, customerId: number): Promise<any> {
+    try {
+      await this.restaurantRepository.createQueryBuilder()
+        .relation(Restaurant, "customers")
+        .of(restaurantId)
+        .remove(customerId);
       return { result: true };
     } catch (err) {
       console.log(err);

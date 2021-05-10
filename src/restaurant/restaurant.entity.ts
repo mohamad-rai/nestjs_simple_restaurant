@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { Food } from "../food/food.entity";
+import { Customer } from "../customer/customer.entity";
 
 @Entity()
 export class Restaurant {
@@ -15,7 +16,10 @@ export class Restaurant {
   @Column({default: true})
   isActive: boolean;
 
-  @ManyToMany(type => Food)
+  @ManyToMany(() => Food)
   @JoinTable()
     foods:Food[];
+
+  @OneToMany(() => Customer, customer => customer.restaurant)
+  customers: Customer[];
 }
