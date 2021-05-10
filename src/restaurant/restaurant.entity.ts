@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
+import { Food } from "../food/food.entity";
 
 @Entity()
 export class Restaurant {
@@ -13,12 +14,8 @@ export class Restaurant {
 
   @Column({default: true})
   isActive: boolean;
-}
 
-// export class Restaurant {
-//   constructor(
-//     public id: string,
-//     public title: string,
-//     public description: string,
-//   ) {}
-// }
+  @ManyToMany(type => Food)
+  @JoinTable()
+    foods:Food[];
+}

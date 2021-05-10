@@ -37,4 +37,20 @@ export class RestaurantsController {
   async delete(@Param('id') id: number){
     return this.restaurantService.delete(id);
   }
+
+  @Post('food-menu/:id')
+  async addFood(
+    @Param('id') restaurantId: number,
+    @Body('foodId') foodId: number
+  ) {
+    return await this.restaurantService.addFoodToRestaurant(restaurantId, foodId);
+  }
+
+  @Delete('food-menu/:restaurantId/:foodId')
+  async removeFood(
+    @Param('restaurantId') restaurantId: number,
+    @Param('foodId') foodId: number
+  ) {
+    return await this.restaurantService.removeFoodToRestaurant(restaurantId, foodId);
+  }
 }
