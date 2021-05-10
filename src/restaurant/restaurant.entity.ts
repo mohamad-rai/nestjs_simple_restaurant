@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { Food } from "../food/food.entity";
 import { Customer } from "../customer/customer.entity";
+import { Order } from "../order/order.entity";
 
 @Entity()
 export class Restaurant {
@@ -22,4 +23,7 @@ export class Restaurant {
 
   @OneToMany(() => Customer, customer => customer.restaurant)
   customers: Customer[];
+
+  @OneToMany(() => Order, order => order.restaurant)
+  orders: Order[];
 }
