@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { RestaurantService } from "./restaurant.service";
 
 @Controller("restaurant")
@@ -7,21 +7,34 @@ export class RestaurantsController {
   }
 
   @Post()
-  addproduct(
-    @Body("title") restTitle: string,
-    @Body("description") restDescription: string
+  async create(
+    @Body("title") title: string,
+    @Body("address") address: string
   ) {
-    const restaurantId = this.restaurantService.insertRestaurant(restTitle, restDescription);
-    return { id: restaurantId };
+    return await this.restaurantService.create({ title, address });
   }
 
   @Get()
-  getAllRestaurnats(){
-    return this.restaurantService.getRestaurants();
+  async all(){
+    return await this.restaurantService.all();
   }
 
   @Get(':id')
-  getRestaurant(@Param('id') restaurantId: string){
-    return this.restaurantService.getSingleRestaurant(restaurantId);
+  async single(@Param('id') id: number){
+    return await this.restaurantService.single(id);
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: number,
+    @Body('title') title: string,
+    @Body('address') address: string
+  ){
+    return await this.restaurantService.update(id, {title, address});
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: number){
+    return this.restaurantService.delete(id);
   }
 }
